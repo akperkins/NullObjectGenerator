@@ -5,4 +5,5 @@ package com.overnightapps;
  */
 public interface TestInterface {
     public String getMoney();
+    void doNotReturn();
 }

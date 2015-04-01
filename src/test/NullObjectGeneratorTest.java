@@ -1,6 +1,7 @@
 package test;
 
 import com.overnightapps.NullObjectGenerator;
+import com.overnightapps.TestClass;
 import com.overnightapps.TestInterface;
 import junit.framework.TestCase;
 
@@ -15,8 +16,27 @@ public class NullObjectGeneratorTest extends TestCase {
         nullObjectGenerator = new NullObjectGenerator();
     }
 
+    public void test_generate_passTestInterfaceWithAMethodThatReturnsAString_shouldReceiveANNullObject(){
+        TestInterface testInterface = nullObjectGenerator.generate(TestInterface.class);
+        assertNotNull(testInterface);
+        testInterface.getMoney();
+    }
+
     public void test_generate_passTestInterface_shouldReceiveANNullObject(){
         TestInterface testInterface = nullObjectGenerator.generate(TestInterface.class);
         assertNotNull(testInterface);
+        testInterface.doNotReturn();
+    }
+
+    public void test_generate_passTestClassWithAMethodThatReturnsAString_shouldReceiveANNullObject(){
+        TestInterface testInterface = nullObjectGenerator.generate(TestClass.class);
+        assertNotNull(testInterface);
+        testInterface.getMoney();
+    }
+
+    public void test_generate_passTestClass_shouldReceiveANNullObject(){
+        TestInterface testInterface = nullObjectGenerator.generate(TestClass.class);
+        assertNotNull(testInterface);
+        testInterface.doNotReturn();
     }
 }
