@@ -39,4 +39,19 @@ public class NullObjectGeneratorTest extends TestCase {
         assertNotNull(testInterface);
         testInterface.doNotReturn();
     }
+
+    public void test_generate_passTestClassWithHardFailSet_anExceptionShouldBeThrown(){ //todo replace these junit 3 tests with junit 4
+        nullObjectGenerator = new NullObjectGenerator(true);
+        TestInterface testInterface = nullObjectGenerator.generate(TestClass.class);
+        assertNotNull(testInterface);
+        boolean isExceptionThrown;
+
+        try {
+            testInterface.doNotReturn();
+            isExceptionThrown = false;
+        } catch (AssertionError e){
+            isExceptionThrown = true;
+        }
+        assertTrue(isExceptionThrown);//todo replace with assertj
+    }
 }
