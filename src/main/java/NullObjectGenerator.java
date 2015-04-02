@@ -1,5 +1,3 @@
-package com.overnightapps;
-
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.FixedValue;
 
@@ -9,13 +7,16 @@ import net.sf.cglib.proxy.FixedValue;
 public class NullObjectGenerator {
 
     private final boolean isSetToFailHard;
+    private final Logger logger;
 
-    public NullObjectGenerator(boolean isSetToFailHard) {
+    public NullObjectGenerator(boolean isSetToFailHard, Logger logger) {
         this.isSetToFailHard = isSetToFailHard;
+        this.logger = logger;
     }
 
     public NullObjectGenerator() {
         this.isSetToFailHard = false;
+        this.logger = null;
     }
 
     public <T extends Object> T generate(Class<T> testInterfaceClass) {
@@ -38,8 +39,13 @@ public class NullObjectGenerator {
         return isSetToFailHard;
     }
 
+    public Logger getLogger() {
+        return logger;
+    }
+
     public static class Builder {
         private boolean isSetToFailHard;
+        private Logger logger;
 
         public Builder setFailHard() {
             isSetToFailHard = true;
@@ -47,7 +53,16 @@ public class NullObjectGenerator {
         }
 
         public NullObjectGenerator build() {
-            return new NullObjectGenerator(isSetToFailHard);
+            return new NullObjectGenerator(isSetToFailHard, logger);
         }
+
+        public Builder setLogger(Logger logger) {
+            this.logger = logger;
+            return this;
+        }
+    }
+
+    public static interface Logger {
+        public void logNullOccurence(String tag, String message);
     }
 }

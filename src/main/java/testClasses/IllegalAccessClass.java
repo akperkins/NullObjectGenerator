@@ -1,9 +1,9 @@
-package com.overnightapps;
+package testClasses;
 
 /**
  * Created by andreperkins on 3/31/15.
  */
-public class TestClass implements TestInterface {
+public class IllegalAccessClass implements TestInterface {
     @Override
     public String getMoney() {
         throw new IllegalAccessError();

@@ -1,4 +1,4 @@
-package com.overnightapps;
+import testClasses.TestInterface;
 
 public class Main {
     public static void main(String[] args) {
