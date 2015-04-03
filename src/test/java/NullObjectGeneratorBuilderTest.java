@@ -19,7 +19,7 @@ public class NullObjectGeneratorBuilderTest {
         NullObjectGenerator nullObjectGenerator = new NullObjectGenerator.Builder()
                 .setLogger(new NullObjectGenerator.Logger() {
                     @Override
-                    public void logNullOccurence() {
+                    public void logNullOccurrence() {
                         //no-op
                     }
                 }).build();

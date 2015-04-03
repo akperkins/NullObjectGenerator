@@ -1,11 +1,10 @@
-import junit.framework.Assert;
-import junit.framework.TestCase;
 import org.junit.Before;
 import org.junit.Test;
 import testClasses.IllegalAccessClass;
 import testClasses.TestAbstractClass;
 import testClasses.TestInterface;
 
+import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -25,9 +24,41 @@ public class NullObjectGeneratorTest {
     }
 
     @Test
-    public void test_generate_passTestInterfaceWithAMethodThatReturnsAString_shouldReceiveANNullObject(){
+    public void test_generate_passTestInterfaceWithAMethodThatReturnsAString_shouldReceiveANNullObjectThatReturnsAnEmptyString(){
         TestInterface testInterface = nullObjectGenerator.generate(TestInterface.class);
         assertThat(testInterface.getString()).isEqualTo("");
+    }
+
+    @Test
+    public void test_generate_passTestInterfaceWithAMethodThatReturnsAInt_shouldReceiveANNullObjectThatReturnsAnEmptyInt(){
+        TestInterface testInterface = nullObjectGenerator.generate(TestInterface.class);
+        assertThat(testInterface.getInt()).isEqualTo(0);
+    }
+
+    @Test
+    public void test_generate_passTestInterfaceWithAMethodThatReturnsALong_shouldReceiveANNullObjectALong(){
+        TestInterface testInterface = nullObjectGenerator.generate(TestInterface.class);
+        assertThat(testInterface.getLong()).isEqualTo(0L);
+    }
+
+    @Test
+    public void test_generate_passTestInterfaceWithAMethodThatReturnsADouble_shouldReceiveANNullObject(){
+        TestInterface testInterface = nullObjectGenerator.generate(TestInterface.class);
+        assertThat(testInterface.getDouble()).isEqualTo(0.0);
+    }
+
+    @Test
+    public void test_generate_passTestInterfaceWithAMethodThatReturnsABoolean_shouldReceiveANNullObject(){
+        TestInterface testInterface = nullObjectGenerator.generate(TestInterface.class);
+        assertThat(testInterface.getBoolean()).isEqualTo(false);
+    }
+
+    @Test
+    public void test_generate_passTestInterfaceWithAMethodThatReturnsARandomObject_shouldReceiveANNullObjectAndTheNulledMethodShouldReturnAnotherNullObject(){
+        TestInterface testInterface = nullObjectGenerator.generate(TestInterface.class);
+        Date randomObject = testInterface.getRandomObject();
+        assertThat(randomObject).isNotNull();
+        assertThat(randomObject.after(null)).isFalse();
     }
 
     @Test
@@ -61,7 +92,7 @@ public class NullObjectGeneratorTest {
         nullObjectGenerator = new NullObjectGenerator(false, mock);
         IllegalAccessClass illegalAccessClass = nullObjectGenerator.generate(IllegalAccessClass.class);
         illegalAccessClass.doNotReturn();
-        verify(mock).logNullOccurence();
+        verify(mock).logNullOccurrence();
     }
 
     @Test

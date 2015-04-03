@@ -25,7 +25,7 @@ public class NullObjectGenerator {
             @Override
             public Object loadObject() throws Exception {
                 if(logger != null){
-                    logger.logNullOccurence();
+                    logger.logNullOccurrence();
                 }
                 if(isSetToFailHard){
                     throw new AssertionError("A null object was not expected here.");
@@ -33,8 +33,8 @@ public class NullObjectGenerator {
                 return "";
             }
         });
-        T proxy = (T) enhancer.create();
-        return proxy;
+        T nulledObject = (T) enhancer.create();
+        return nulledObject;
     }
 
     public boolean isSetToFailHard() {
@@ -65,6 +65,6 @@ public class NullObjectGenerator {
     }
 
     public interface Logger {
-        public void logNullOccurence();
+        public void logNullOccurrence();
     }
 }
