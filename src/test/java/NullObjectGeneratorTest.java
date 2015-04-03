@@ -1,5 +1,7 @@
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
 import testClasses.IllegalAccessClass;
 import testClasses.TestAbstractClass;
 import testClasses.TestInterface;
@@ -14,49 +16,46 @@ import static org.mockito.Mockito.verify;
 /**
  * Created by andreperkins on 3/31/15.
  */
-public class NullObjectGeneratorTest extends TestCase {
+public class NullObjectGeneratorTest {
     private NullObjectGenerator nullObjectGenerator;
 
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
         nullObjectGenerator = new NullObjectGenerator();
     }
 
+    @Test
     public void test_generate_passTestInterfaceWithAMethodThatReturnsAString_shouldReceiveANNullObject(){
         TestInterface testInterface = nullObjectGenerator.generate(TestInterface.class);
         assertThat(testInterface.getString()).isEqualTo("");
     }
 
+    @Test
     public void test_generate_passTestInterface_shouldReceiveANNullObject(){
         TestInterface testInterface = nullObjectGenerator.generate(TestInterface.class);
         testInterface.doNotReturn();
     }
 
+    @Test
     public void test_generate_passTestClassWithAMethodThatReturnsAString_shouldReceiveANNullObject(){
         TestInterface testInterface = nullObjectGenerator.generate(IllegalAccessClass.class);
         assertThat(testInterface.getString()).isEqualTo("");
     }
 
+    @Test
     public void test_generate_passTestClass_shouldReceiveANNullObject(){
         TestInterface testInterface = nullObjectGenerator.generate(IllegalAccessClass.class);
         testInterface.doNotReturn();
     }
 
-    public void test_generate_passTestClassWithHardFailSet_anExceptionShouldBeThrown(){ //todo replace these junit 3 tests with junit 4
+    @Test(expected = AssertionError.class)
+    public void test_generate_passTestClassWithHardFailSet_anExceptionShouldBeThrown(){
         nullObjectGenerator = new NullObjectGenerator(true, null);
         TestInterface testInterface = nullObjectGenerator.generate(IllegalAccessClass.class);
-        Assert.assertNotNull(testInterface);
-        boolean isExceptionThrown;
-
-        try {
-            testInterface.doNotReturn();
-            isExceptionThrown = false;
-        } catch (AssertionError e){
-            isExceptionThrown = true;
-        }
-        TestCase.assertTrue(isExceptionThrown);//todo replace with junit4
+        testInterface.doNotReturn();
     }
 
+    @Test
     public void test_generate_passInALogger_theNullOccurrenceShouldBeLogged(){
         NullObjectGenerator.Logger mock = mock(NullObjectGenerator.Logger.class);
         nullObjectGenerator = new NullObjectGenerator(false, mock);
@@ -65,11 +64,13 @@ public class NullObjectGeneratorTest extends TestCase {
         verify(mock).logNullOccurence();
     }
 
+    @Test
     public void test_generate_abstractClassWithOneParamConstructor_shouldBeNulled(){
         TestAbstractClass testAbstractClass = nullObjectGenerator.generate(TestAbstractClass.class);
         assertThat(testAbstractClass.getTransformedMessage()).isEqualTo("");
     }
 
+    @Test
     public void test_generate_ListAbstractClassAndNullaMethodThatReturnsABoolean(){
         List list = nullObjectGenerator.generate(List.class);
         assertThat(list.add(any())).isFalse();
