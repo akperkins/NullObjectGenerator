@@ -3,6 +3,9 @@ import junit.framework.TestCase;
 import testClasses.IllegalAccessClass;
 import testClasses.TestInterface;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+
 /**
  * Created by andreperkins on 3/31/15.
  */
@@ -17,7 +20,7 @@ public class NullObjectGeneratorTest extends TestCase {
     public void test_generate_passTestInterfaceWithAMethodThatReturnsAString_shouldReceiveANNullObject(){
         TestInterface testInterface = nullObjectGenerator.generate(TestInterface.class);
         Assert.assertNotNull(testInterface);
-        testInterface.getMoney();
+        testInterface.getString();
     }
 
     public void test_generate_passTestInterface_shouldReceiveANNullObject(){
@@ -29,7 +32,7 @@ public class NullObjectGeneratorTest extends TestCase {
     public void test_generate_passTestClassWithAMethodThatReturnsAString_shouldReceiveANNullObject(){
         TestInterface testInterface = nullObjectGenerator.generate(IllegalAccessClass.class);
         Assert.assertNotNull(testInterface);
-        testInterface.getMoney();
+        testInterface.getString();
     }
 
     public void test_generate_passTestClass_shouldReceiveANNullObject(){
@@ -51,5 +54,13 @@ public class NullObjectGeneratorTest extends TestCase {
             isExceptionThrown = true;
         }
         TestCase.assertTrue(isExceptionThrown);//todo replace with assertj
+    }
+
+    public void test_generate_passInALogger_theNullOccurrenceShouldBeLogged(){
+        NullObjectGenerator.Logger mock = mock(NullObjectGenerator.Logger.class);
+        nullObjectGenerator = new NullObjectGenerator(false, mock);
+        IllegalAccessClass illegalAccessClass = nullObjectGenerator.generate(IllegalAccessClass.class);
+        illegalAccessClass.doNotReturn();
+        verify(mock).logNullOccurence();
     }
 }

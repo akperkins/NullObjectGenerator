@@ -5,7 +5,6 @@ import net.sf.cglib.proxy.FixedValue;
  * Created by andreperkins on 3/31/15.
  */
 public class NullObjectGenerator {
-
     private final boolean isSetToFailHard;
     private final Logger logger;
 
@@ -25,6 +24,9 @@ public class NullObjectGenerator {
         enhancer.setCallback(new FixedValue() {
             @Override
             public Object loadObject() throws Exception {
+                if(logger != null){
+                    logger.logNullOccurence();
+                }
                 if(isSetToFailHard){
                     throw new AssertionError("A null object was not expected here.");
                 }
@@ -62,7 +64,7 @@ public class NullObjectGenerator {
         }
     }
 
-    public static interface Logger {
-        public void logNullOccurence(String tag, String message);
+    public interface Logger {
+        public void logNullOccurence();
     }
 }

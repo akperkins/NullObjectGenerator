@@ -5,7 +5,7 @@ package testClasses;
  */
 public class IllegalAccessClass implements TestInterface {
     @Override
-    public String getMoney() {
+    public String getString() {
         throw new IllegalAccessError();
     }
 

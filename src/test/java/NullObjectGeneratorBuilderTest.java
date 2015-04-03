@@ -14,8 +14,8 @@ public class NullObjectGeneratorBuilderTest extends TestCase {
         NullObjectGenerator nullObjectGenerator = new NullObjectGenerator.Builder()
                 .setLogger(new NullObjectGenerator.Logger() {
                     @Override
-                    public void logNullOccurence(String tag, String message) {
-
+                    public void logNullOccurence() {
+                        //no-op
                     }
                 }).build();
         assertNotNull(nullObjectGenerator.getLogger());
