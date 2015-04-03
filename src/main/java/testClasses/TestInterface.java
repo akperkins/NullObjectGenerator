@@ -1,9 +1,16 @@
 package testClasses;
 
+import java.util.Date;
+
 /**
  * Created by andreperkins on 3/31/15.
  */
 public interface TestInterface {
-    public String getString();
+    String getString();
+    int getInt();
+    long getLong();
+    double getDouble();
+    boolean getBoolean();
+    Date getRandomObject();
     void doNotReturn();
 }

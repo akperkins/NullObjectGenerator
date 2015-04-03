@@ -4,6 +4,10 @@ import testClasses.IllegalAccessClass;
 import testClasses.TestAbstractClass;
 import testClasses.TestInterface;
 
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -20,25 +24,21 @@ public class NullObjectGeneratorTest extends TestCase {
 
     public void test_generate_passTestInterfaceWithAMethodThatReturnsAString_shouldReceiveANNullObject(){
         TestInterface testInterface = nullObjectGenerator.generate(TestInterface.class);
-        Assert.assertNotNull(testInterface);
-        testInterface.getString();
+        assertThat(testInterface.getString()).isEqualTo("");
     }
 
     public void test_generate_passTestInterface_shouldReceiveANNullObject(){
         TestInterface testInterface = nullObjectGenerator.generate(TestInterface.class);
-        Assert.assertNotNull(testInterface);
         testInterface.doNotReturn();
     }
 
     public void test_generate_passTestClassWithAMethodThatReturnsAString_shouldReceiveANNullObject(){
         TestInterface testInterface = nullObjectGenerator.generate(IllegalAccessClass.class);
-        Assert.assertNotNull(testInterface);
-        testInterface.getString();
+        assertThat(testInterface.getString()).isEqualTo("");
     }
 
     public void test_generate_passTestClass_shouldReceiveANNullObject(){
         TestInterface testInterface = nullObjectGenerator.generate(IllegalAccessClass.class);
-        Assert.assertNotNull(testInterface);
         testInterface.doNotReturn();
     }
 
@@ -67,6 +67,11 @@ public class NullObjectGeneratorTest extends TestCase {
 
     public void test_generate_abstractClassWithOneParamConstructor_shouldBeNulled(){
         TestAbstractClass testAbstractClass = nullObjectGenerator.generate(TestAbstractClass.class);
-        testAbstractClass.getTransformedMessage();
+        assertThat(testAbstractClass.getTransformedMessage()).isEqualTo("");
+    }
+
+    public void test_generate_ListAbstractClassAndNullaMethodThatReturnsABoolean(){
+        List list = nullObjectGenerator.generate(List.class);
+        assertThat(list.add(any())).isFalse();
     }
 }

@@ -30,7 +30,7 @@ public class NullObjectGenerator {
                 if(isSetToFailHard){
                     throw new AssertionError("A null object was not expected here.");
                 }
-                return "Hello cglib!";
+                return "";
             }
         });
         T proxy = (T) enhancer.create();
