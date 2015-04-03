@@ -54,7 +54,7 @@ public class NullObjectGeneratorTest extends TestCase {
         } catch (AssertionError e){
             isExceptionThrown = true;
         }
-        TestCase.assertTrue(isExceptionThrown);//todo replace with assertj
+        TestCase.assertTrue(isExceptionThrown);//todo replace with junit4
     }
 
     public void test_generate_passInALogger_theNullOccurrenceShouldBeLogged(){
