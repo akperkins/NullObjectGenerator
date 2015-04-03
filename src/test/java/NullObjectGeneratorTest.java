@@ -1,6 +1,7 @@
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import testClasses.IllegalAccessClass;
+import testClasses.TestAbstractClass;
 import testClasses.TestInterface;
 
 import static org.mockito.Mockito.mock;
@@ -62,5 +63,10 @@ public class NullObjectGeneratorTest extends TestCase {
         IllegalAccessClass illegalAccessClass = nullObjectGenerator.generate(IllegalAccessClass.class);
         illegalAccessClass.doNotReturn();
         verify(mock).logNullOccurence();
+    }
+
+    public void test_generate_abstractClassWithOneParamConstructor_shouldBeNulled(){
+        TestAbstractClass testAbstractClass = nullObjectGenerator.generate(TestAbstractClass.class);
+        testAbstractClass.getTransformedMessage();
     }
 }
