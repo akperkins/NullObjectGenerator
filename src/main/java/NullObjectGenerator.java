@@ -1,8 +1,10 @@
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.FixedValue;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 
 /**
  * Created by andreperkins on 3/31/15.
@@ -34,27 +36,48 @@ public class NullObjectGenerator {
                     throw new AssertionError("A null object was not expected here.");
                 }
                 Class<?> returnType = method.getReturnType();
-                if(returnType == String.class){
-                    return "";
-                } else if(returnType == int.class) {
-                    return 0;
-                } else if(returnType == long.class){
-                    return 0L;
-                } else if(returnType == double.class) {
-                    return 0.0D;
-                } else if(returnType == boolean.class){
-                    return false;
-                } else {
-                    try {
-                        return generate(returnType);
-                    } catch (IllegalArgumentException e){
-                        return null;
-                    }
-                }
+                return generateMockReturnValue(returnType);
             }
         });
-        T nulledObject = (T) enhancer.create();
-        return nulledObject;
+        Constructor<?>[] constructors = testInterfaceClass.getConstructors();
+        if(constructors.length == 0){
+            try {
+                return (T) enhancer.create();
+            } catch (IllegalArgumentException e){
+                return null;
+            }
+        }
+        Class[] argumentTypes = constructors[0].getParameterTypes();
+        Object[] objects = new Object[argumentTypes.length];
+        for(int i =0; i < argumentTypes.length; i++){
+            Class argumentType = argumentTypes[i];
+            if(Modifier.isFinal(argumentType.getModifiers())){
+                objects[i] = null;
+            } else {
+                objects[i] = generate(argumentType);
+            }
+        }
+        return (T) enhancer.create(argumentTypes, objects);
+    }
+
+    private Object generateMockReturnValue(Class<?> returnType) {
+        if(returnType == String.class){
+            return "";
+        } else if(returnType == int.class) {
+            return 0;
+        } else if(returnType == long.class){
+            return 0L;
+        } else if(returnType == double.class) {
+            return 0.0D;
+        } else if(returnType == boolean.class){
+            return false;
+        } else {
+            try {
+                return generate(returnType);
+            } catch (IllegalArgumentException e){
+                return null;
+            }
+        }
     }
 
     public boolean isSetToFailHard() {
