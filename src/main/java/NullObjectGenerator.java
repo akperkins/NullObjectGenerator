@@ -1,6 +1,9 @@
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.FixedValue;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+
 /**
  * Created by andreperkins on 3/31/15.
  */
@@ -21,16 +24,33 @@ public class NullObjectGenerator {
     public <T extends Object> T generate(Class<T> testInterfaceClass) {
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(testInterfaceClass);
-        enhancer.setCallback(new FixedValue() {
+        enhancer.setCallback(new net.sf.cglib.proxy.InvocationHandler() {
             @Override
-            public Object loadObject() throws Exception {
-                if(logger != null){
+            public Object invoke(Object o, Method method, Object[] objects) throws Throwable {
+                if (logger != null) {
                     logger.logNullOccurrence();
                 }
-                if(isSetToFailHard){
+                if (isSetToFailHard) {
                     throw new AssertionError("A null object was not expected here.");
                 }
-                return "";
+                Class<?> returnType = method.getReturnType();
+                if(returnType == String.class){
+                    return "";
+                } else if(returnType == int.class) {
+                    return 0;
+                } else if(returnType == long.class){
+                    return 0L;
+                } else if(returnType == double.class) {
+                    return 0.0D;
+                } else if(returnType == boolean.class){
+                    return false;
+                } else {
+                    try {
+                        return generate(returnType);
+                    } catch (IllegalArgumentException e){
+                        return null;
+                    }
+                }
             }
         });
         T nulledObject = (T) enhancer.create();
