@@ -1,4 +1,4 @@
-package testClasses;
+package main.java.testClasses;
 
 import java.util.Date;
 

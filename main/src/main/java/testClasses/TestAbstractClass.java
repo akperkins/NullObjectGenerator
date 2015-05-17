@@ -1,4 +1,4 @@
-package testClasses;
+package main.java.testClasses;
 
 /**
  * Created by andreperkins on 4/3/15.

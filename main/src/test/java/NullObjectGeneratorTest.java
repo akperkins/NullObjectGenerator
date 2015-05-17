@@ -1,8 +1,8 @@
 import org.junit.Before;
 import org.junit.Test;
-import testClasses.IllegalAccessClass;
-import testClasses.TestAbstractClass;
-import testClasses.TestInterface;
+import main.java.testClasses.IllegalAccessClass;
+import main.java.testClasses.TestAbstractClass;
+import main.java.testClasses.TestInterface;
 
 import java.util.Date;
 import java.util.List;
