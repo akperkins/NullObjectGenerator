@@ -1,8 +1,6 @@
 import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.FixedValue;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
